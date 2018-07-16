@@ -1,11 +1,11 @@
-> 本文主要翻译自[《high-throughput-low-latency-and-exactly-once-stream-processing-with-apache-flink》](https://data-artisans.com/blog/high-throughput-low-latency-and-exactly-once-stream-processing-with-apache-flink)，作为Flink发明人以及dA CEO，Kostas Tzoumas对于流式处理有深入的见解。文章分为两部分，本篇文章是上半部分有关流式计算核心能力的介绍和探讨。文章考虑到语言文化差异，对于部分较难理解部分加入我自己的说明。
+> 本文主要翻译自[《high-throughput-low-latency-and-exactly-once-stream-processing-with-apache-flink》](https://data-artisans.com/blog/high-throughput-low-latency-and-exactly-once-stream-processing-with-apache-flink)，作为Flink发明人以及data-Artisan(Flink背后商业公司) CEO，Kostas Tzoumas对于流式处理有深入的见解。文章分为两部分，本篇文章是上半部分有关流式计算核心能力的介绍和探讨。文章考虑到语言文化差异，对于部分较难理解部分加入译者的说明。
 
 
 # 前言
 
-当前，流数据平台的普及率正在飙升。为了解决日益增长的实时数据处理需求，一些公司正在将其部分的大数据基础架构转换为流式处理模型。 基于流数据的基础架构不仅能够更好地解决一些延迟敏感的数据处理业务需求，同时提供更多深入业务洞察; 另外，流式数据处理平台让传统的数据仓库的建设更加简单灵活。
+当前，流数据平台的普及率正在飙升。为了解决日益增长的实时数据处理需求，一些公司正在将其部分大数据基础架构转换为流式处理模型。 基于流数据的基础架构不仅能够更好地解决延迟敏感的数据处理业务需求，同时提供更多深入业务洞察; 另外，流式数据处理平台让传统的数据仓库建设更加简单灵活。
 
-流式基础架构的关键部分是流计算引擎。优秀的流式计算引擎可以让业务即使在有状态计算的情况下，也能提供低延迟、高吞吐、强一致性。在之前的文章中，我们介绍了Apache Flink™作为可扩展的流处理引擎，它提供了这种属性的组合。
+流式基础架构的关键部分是流计算引擎。优秀的流式计算引擎可以让业务即使在有状态计算的情况下，也能提供低延迟、高吞吐、强一致性。
 
 在本文中，我们将深入探讨Flink的检查点机制如何工作，以及它如何取代旧架构以实现流容错和恢复。 我们测量Flink在各种类型的流媒体应用程序中的性能，并通过在Apache Storm（一种广泛使用的低延迟流处理器）上运行相同系列的实验来进行效果对比。
 
