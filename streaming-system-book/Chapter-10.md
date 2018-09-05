@@ -94,7 +94,7 @@ Hadoop和MapReduce之间的主要区别在于Cutting和Cafarella通过开源（�
 
 ![10-8](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1008.png)
 
-Figure 10-8. Flume的时间表
+图10-8. Flume的时间表
 
 Flume项目由Craig Chambers在2007年谷歌西雅图办事处成立时发起。Flume最初打算是希望解决MapReduce的一些固有缺点，这些缺点即使在MapReduce最初大红大紫的阶段已经非常明显。其中许多缺点都与MapReduce完全限定的Map→Shuffle→Reduce编程模型相关; 这个编程模型虽然简单，但它带来了一些缺点：
 
@@ -143,7 +143,7 @@ Flume C++版本很快于2011年发布。之后2012年初，Flume被引入为Goog
 
 ![10-14](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1014.png)
 
-Figure 10-14. 帖子 《No shard left behind》
+图10-14. 帖子 《No shard left behind》
 
 尽管那篇博客主要是基于Google DataFlow框架下讨论问题，但动态负载均衡（或液态分片，Google内部更习惯这样叫）可以让部分已经完成工作的Worker能够从另外一些繁忙的Worker手中分配一些额外的工作。在Job运行过程中，通过不断的动态调整负载分配可以将系统运行效率趋近最优，这种算法将比传统方法下有经验工程师手工设置的初始参数性能更好。Flume甚至为Worker池变化进行了适配，一个拖慢整个作业进度的Worker会将其任务转移到其他更加高效的Worker上面进行执行。Flume的这些优化手段，在Google内部为公司节省了大量资源。
 
