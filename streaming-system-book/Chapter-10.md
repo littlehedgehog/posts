@@ -10,6 +10,8 @@
 
 ![10-1](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1001.png)
 
+图10-1。 本章讨论各个大数据系统时间表
+
 为了使我们这一次大数据旅行显得更加具体有条理，我们设计了图10-1的时间表，这张时间表概括地展示了不同系统的诞生日期。
 
 在每一个系统介绍过程中，我会尽可能说明清楚该系统的简要历史，并且我会尝试从流式处理系统的演化角度来阐释该系统对演化过程的贡献。最后，我们将回顾以上系统所有的贡献，从而全面了解上述系统如何演化并构建出现代流式处理系统的。
@@ -19,6 +21,8 @@
 我们从MapReduce开始我们的旅程。
 
 ![10-2](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1002.png)
+
+图10-2。MapReduce的时间表
 
 我认为我们可以很确定地说，今天我们讨论的大规模数据处理系统都源自于2003年MapReduce。当时，谷歌的工程师正在构建各种定制化系统，以解决互联网时代下大数据处理难题。当他们这样尝试去解决这些问题时候，发现有三个难以逾越的坎儿：
 
@@ -37,6 +41,8 @@ MapReduce的基本思想是提供一套非常简洁的数据处理API，这套AP
 
 ![10-3](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1003.png)
 
+图10-3。 MapReduce作业原理图
+
 我们已经在第6章详细讨论了MapReduce的语义，所以我们在此不再赘述。仅仅简单地回想一下，我们将处理过程分解为六个离散阶段（MapRead，Map，MapWrite，ReduceRead，Reduce，ReduceWrite）作为对于流或者表进行分析的几个步骤。我们可以看到，整体上Map和Reduce阶段之间差异其实也不大; 更高层次来看，他们都做了以下事情：
 * 从表中读取数据，并转换为数据流 (译者注: 即 MapRead、ReduceRead)
 * 针对上述数据流，将用户编写业务处理代码应用于上述数据流，转换并形成新的一个数据流。 (译者注: 即Map、Reduce)
@@ -46,12 +52,15 @@ MapReduce的基本思想是提供一套非常简洁的数据处理API，这套AP
 
 ![10-4](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1004.png)
 
+图10-4。 MapReduce论文发表在OSDI 2004上
 
 论文中，Google详细描述了MapReduce项目的历史，API的设计和实现，以及有关使用了MapReduce框架的许多不同生产案例的详细信息。当然，Google没有提供任何实际的源代码，以至于最终Google以外的人都认为：“是的，这套系统确实牛啊！”，然后立马回头去模仿MapReduce去构建他们的定制化系统。
 
 在随后这十年的过程中，MapReduce继续在谷歌内部进行大量开发，投入大量时间将这套系统规模推进到前所未有的水平。如果读者朋友希望了解一些更加深入更加详细的MapReduce说明，我推荐由我们的MapReduce团队中负责扩展性、性能优化的大牛Marián Dvorský撰写的文章[《History of massive-scale sorting experiments at Google》](https://cloud.google.com/blog/products/gcp/history-of-massive-scale-sorting-experiments-at-google)（图10-5）
 
 ![10-5](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1005.png)
+
+图10-5。 MariánDvorský的《History of massive-scale sorting experiments》博客文章
 
 我这里希望强调的是，这么多年来看，其他任何的分布式架构最终都没有达到MapReduce的集群规模，甚至在Google内部也没有。从MapReduce诞生起到现在已经跨越十载之久，都未能看到真正能够超越MapReduce系统规模的另外一套系统，足见MapReduce系统之成功。14年的光阴看似不长，对于互联网行业已然永久。
 
@@ -64,12 +73,15 @@ MapReduce的基本思想是提供一套非常简洁的数据处理API，这套AP
 
 ![10-6](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1006.png)
 
+图10-6。 Hadoop的时间表
+
 Hadoop于2005年问世，当时Doug Cutting和Mike Cafarella认为MapReduce论文中的想法太棒了，他们在构建Nutch webcrawler的分布式版本正好需要这套分布式理论基础。在这之前，他们已经实现了自己版本的Google分布式文件系统（最初称为Nutch分布式文件系统的NDFS，后来改名为HDFS或Hadoop分布式文件系统）。因此下一步，自然而然的，基于HDFS之上添加MapReduce计算层。他们称MapReduce这一层为Hadoop。
 
 Hadoop和MapReduce之间的主要区别在于Cutting和Cafarella通过开源（以及HDFS的源代码）确保Hadoop的源代码与世界各地可以共享，最终成为Apache Hadoop项目的一部分。雅虎聘请Cutting来帮助将雅虎网络爬虫项目升级为全部基于Hadoop架构，这个项目使得Hadoop有效提升了生产可用性以及工程效率。自那以后，整个开源生态的大数据处理工具生态系统得到了蓬勃发展。与MapReduce一样，相信其他人已经能够比我更好地讲述了Hadoop的历史。我推荐一个特别好的讲解是Marko Bonaci的[《The history of Hadoop》](https://medium.com/@markobonaci/the-history-of-hadoop-68984a11704)，它本身也是一本已经出版的纸质书籍（图10-7）。
 
 ![10-7](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1007.png)
 
+图10-7。 Marko Bonaci的《The history of Hadoop》
 
 在Hadoop这部分，我是期望读者朋友能够了解到是围绕Hadoop的开源生态系统对整个行业产生的巨大影响。通过创建一个开放的社区，工程师可以从早期的GFS和MapReduce论文中改进和扩展这些想法，这直接促进生态系统的蓬勃发展，并基于此之上产生了许多有用的工具，如Pig，Hive，HBase，Crunch等等。这种开放性是导致我们整个行业现有思想多样性的关键，同时Hadoop开放性生态亦是直接促进流计算系统发展。
 
@@ -79,6 +91,8 @@ Hadoop和MapReduce之间的主要区别在于Cutting和Cafarella通过开源（�
 我们现在再回到Google，讨论Google公司中MapReduce的官方继承者：Flume（[图10-8]，有时也称为FlumeJava，这个名字起源于最初Flume的Java版本。需要注意的是，这里的Flume不要与Apache Flume混淆，这部分是面向不同领域的东西，只是恰好有同样的名字）。
 
 ![10-8](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1008.png)
+
+Figure 10-8. Flume的时间表
 
 Flume项目由Craig Chambers在2007年谷歌西雅图办事处成立时发起。Flume最初打算是希望解决MapReduce的一些固有缺点，这些缺点即使在MapReduce最初大红大紫的阶段已经非常明显。其中许多缺点都与MapReduce完全限定的Map→Shuffle→Reduce编程模型相关; 这个编程模型虽然简单，但它带来了一些缺点：
 
@@ -104,7 +118,6 @@ Flume通过提供可组合的高级API来描述数据处理流水线，从而解
 
 ![10-11](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1011.png)
 
-
 图10-11。合并优化将顺序或并行操作(算子)组合在一起，到同一个操作(算子)。
 
 将两个阶段融合在一起消除了序列化/反序列化和网络开销，这在处理大量数据的底层Pipeline中非常重要。
@@ -113,12 +126,13 @@ Flume通过提供可组合的高级API来描述数据处理流水线，从而解
 
 ![10-12](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1012.png)
 
-
 图10-12: combiner lifting在数据上游直接进行局部聚合后再发送给下游端进行二次聚合。
 
 由于其更清晰的API定义和自动优化机制，在2009年初Google内部推出后FlumeJava立即受到巨大欢迎。之后，该团队发表了题为[《Flume Java: Easy, Efficient Data-Parallel Pipelines》](https://storage.googleapis.com/pub-tools-public-publication-data/pdf/35650.pdf)的论文（参见图10-13），这篇论文本身就是一个很好的学习FlumeJava的资料。
 
 ![10-13](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1013.png)
+
+图10-13: FlumeJava的论文
 
 Flume C++版本很快于2011年发布。之后2012年初，Flume被引入为Google的所有新工程师提供的Noogler6培训内容。MapReduce框架于是最终被走向被替换的命运。
 
@@ -126,6 +140,8 @@ Flume C++版本很快于2011年发布。之后2012年初，Flume被引入为Goog
 工作本身。不仅让Flume更加灵活选择执行计划而不必拘泥于Map→Shuffle→Reduce MapReduce的模型，Dax还启用了新的优化，例如Eugene Kirpi-chov和Malo Denielou的[《No shard left behind》](https://cloud.google.com/blog/products/gcp/no-shard-left-behind-dynamic-work-rebalancing-in-google-cloud-dataflow)博客文章中描述的动态负载均衡（图10-14）。
 
 ![10-14](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1014.png)
+
+Figure 10-14. 帖子 《No shard left behind》
 
 尽管那篇博客主要是基于Google DataFlow框架下讨论问题，但动态负载均衡（或液态分片，Google内部更习惯这样叫）可以让部分已经完成工作的Worker能够从另外一些繁忙的Worker手中分配一些额外的工作。在Job运行过程中，通过不断的动态调整负载分配可以将系统运行效率趋近最优，这种算法将比传统方法下有经验工程师手工设置的初始参数性能更好。Flume甚至为Worker池变化进行了适配，一个拖慢整个作业进度的Worker会将其任务转移到其他更加高效的Worker上面进行执行。Flume的这些优化手段，在Google内部为公司节省了大量资源。
 
@@ -140,9 +156,13 @@ Flume C++版本很快于2011年发布。之后2012年初，Flume被引入为Goog
 
 ![10-15](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1015.png)
 
+图10-15 Storm的时间轴
+
 Storm是Nathan Marz的心血结晶，Nathan Marz后来在一篇题为[《History of Apache Storm and lessons learned》](http://nathanmarz.com/blog/history-of-apache-storm-and-lessons-learned.html)的博客文章中记录了其创作历史（图10-16）。 这篇冗长的博客讲述了BackType这家创业公司一直在自己通过消息队列和自定义代码去处理Twitter信息流。Nathan和十几年前Google里面设计MapReduce相关工程师有相同的认识：实际的业务处理的代码仅仅是系统代码很小一部分，如果有个统一的流式实时处理框架负责处理各类分布式系统底层问题，那么基于之上构建我们的实时大数据处理将会轻松得多。基于此，Nathan团队完成了Storm的设计和开发。值得一提的是，Storm的设计原则和其他系统大相径庭，Storm更多考虑到实时流计算的处理时延而非数据的一致性保证。后者是其他大数据系统必备基础产品特征之一。Storm针对每条流式数据进行计算处理，并提供至多一次或者至少一次的语义保证；同时不提供任何状态存储能力。相比于Batch批处理系统能够提供一致性语义保证，Storm系统能够提供更低的数据处理延迟。对于某些数据处理业务场景来说，这确实也是一个非常合理的取舍。
 
 ![10-16](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1016.png)
+
+图10-16 《History of Apache Storm and lessons learned》
 
 不幸的是，人们很快就清楚地知道他们想要什么样的流式处理系统。他们不仅希望快速得到业务结果，同时希望系统具有低延迟和准确性，但仅凭Storm架构实际上不可能做到这一点。针对这个情况，Nathan后面又提出了Lambda架构。
 
@@ -150,6 +170,7 @@ Storm是Nathan Marz的心血结晶，Nathan Marz后来在一篇题为[《History
 
 ![10-17](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1017.png)
 
+图10-17 《How to beat the CAP theorem》
 
 我已经花了相当多的时间来分析Lambda架构的缺点，以至于我不会在这里啰嗦这些问题。但我要重申一下：尽管它带来了大量成本问题，Lambda架构当前还是非常受欢迎，仅仅是因为它满足了许多企业一个关键需求：系统提供低延迟但不准确的数据，后续通过批处理系统纠正之前数据，最终给出一致性的结果。从流处理系统演变的角度来看，Storm确实为普罗大众带来低延迟的流式实时数据处理能力。然而，它是以牺牲数据强一致性为代价的，这反过来又带来了Lambda架构的兴起，导致接下来多年基于两套系统架构之上的数据处理带来无尽的麻烦和成本。
 
@@ -157,6 +178,7 @@ Storm是Nathan Marz的心血结晶，Nathan Marz后来在一篇题为[《History
 
 ![10-18](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1018.png)
 
+图10-18 Heron的论文
 
 Heron本身也是开源产品（但开源不在Apache项目中）。鉴于Storm仍然在社区中持续发展，现在又冒出一套和Storm竞争的软件，最终两边系统鹿死谁手，我们只能拭目以待了。
 
@@ -166,6 +188,7 @@ Heron本身也是开源产品（但开源不在Apache项目中）。鉴于Storm�
 
 ![10-19](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1019.png)
 
+图10-19 Spark的时间轴
 
 Spark在2009年左右诞生于加州大学伯克利分校的著名AMPLab。最初推动Spark成名的原因是它能够经常在内存执行大量的计算工作，直到作业的最后一步才写入磁盘。工程师通过弹性分布式数据集（RDD）理念实现了这一目标，在底层Pipeline中能够获取每个阶段数据结果的所有派生关系，并且允许在机器故障时根据需要重新计算中间结果，当然，这些都基于一些假设 a）输入是总是可重放的，b）计算是确定性的。对于许多案例来说，这些先决条件是真实的，或者看上去足够真实，至少用户确实在Spark享受到了巨大的性能提升。从那时起，Spark逐渐建立起其作为Hadoop事实上的继任产品定位。
 
@@ -183,6 +206,7 @@ Spark在2009年左右诞生于加州大学伯克利分校的著名AMPLab。最�
 
 ![10-20](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1020.png)
 
+图10-20 Spark的学位论文
 
 时至今日，Spark的2.x版本极大地扩展了Spark Streaming的语义功能，其中已经包含了本书中描述流式处理模型的许多部分，同时试图简化一些更复杂的设计。 Spark甚至推出了一种全新的、真正面向流式处理的架构，用以规避掉微批架构的种种问题。但是曾经，当Spark第一次出现时，它带来的重要贡献是它是第一个公开可用的流处理引擎，具有数据处理的强一致性语义，尽管这个特性只能用在有序数据或使用处理时间计算的场景。
 
@@ -193,6 +217,7 @@ Spark在2009年左右诞生于加州大学伯克利分校的著名AMPLab。最�
 
 ![10-21](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1021.png)
 
+图10-21 MillWheel时间表
 
 MillWheel是Google最早的通用流处理架构，该项目由Paul Nordstrom在Google西雅图办事处开业时发起。 MillWheel在Google内的成功与长期以来一直致力于为无序数据提供低延迟，强一致的处理能力不无关系。在本书的讲解中，我们已经多次分别讨论了促使MillWheel成功产品特点的方方面面。
 
@@ -212,11 +237,19 @@ MillWheel是Google最早的通用流处理架构，该项目由Paul Nordstrom在
 
 > 接下来我们会讨论到，异常检测的某些需求使其不适合纯物化视图语义（即，依次针对单条记录处理），特别当需要完整的数据集才能够识别业务异常，而这些异常恰好是由于数据的缺失或者不完整导致的。另外，不停轮询结果表以查看是否有异常其实并不是一个扩展性很好的办法。真正的流式用户场景是推动watermark等功能的原始需求来源。(Watermark所代表的时间有先有后，我们需要最低的Watermark追踪数据的完整性，而最高的Watermark在数据时间发生倾斜时候非常容易导致丢数据的情况发生，类似Spark Structured Streaming的用法)。省略类似Watermark等功能的系统看上去简单不少，但换来代价是功能受限。在很多情况下，这些功能实际上有非常重要的业务价值。但如果这样的系统声称这些简化的功能会带来系统更多的普适性，不要听他们忽悠。试问一句，功能需求大量被砍掉，如何保证系统的普适性呢？
 
-
 Zeitgeist项目首先尝试通过在计算逻辑之前插入处理时间的延迟数值来解决数据延迟问题。当数据按顺序到达时，这个思路处理逻辑正常。但业务人员随后发现数据有时可能会延迟很大，从而导致数据无序进入流式处理系统。一旦出现这个情况，系统仅仅采用处理时间的延迟是不够的，因为底层数据处理会因为数据乱序原因被错误判断为异常。最终，我们需要一种等待数据到齐的机制。
 
 之后Watermark被设计出来用以解决数据乱序的问题。正如Slava在第3章中所描述的那样，基本思想是跟踪系统输入数据的当前进度，对于每个给定的数据源，构建一个数据输入进度用来表征输入数据的完整性。对于一些简单的数据源，例如一个带分区的Kafka Topic，每个Topic下属的分区被写入的是业务时间持续递增的数据（例如通过Web前端实时记录的日志事件），这种情况下我们可以计算产生一个非常完美的Watermark。但对于一些非常复杂的数据输入，例如动态的输入日志集，一个启发式算法可能是我们能够设计出来最能解决业务问题的Watermark生成算法了。但无论哪种方式，Watermark都是解决输入事件完整性最佳方式。之前我们尝试使用处理时间来解决事件输入完整性，有点驴头不及马嘴的感觉。
 
+得益于客户的需求推动，MillWheel最终成为能够支持无序数据的强大流处理引擎。因此，题为《MillWheel: Fault-Tolerant Stream Processing at Internet Scale》（图10-22）的论文花费大部分时间来讨论在这样的系统中提供正确性的各种问题，一致性保证、Watermark。如果您对这个主题感兴趣，那值得花时间去读读这篇论文。
+
+![10-22](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1022.png)
+
+图10-22 MillWheel论文
+
+MillWheel论文发表后不久，MillWheel就成为Flume底层提供支撑的流式处理引擎，我们称之为Streaming Flume。今天在谷歌内部，MillWheel被下一代理论更为领先的系统所替换: Windmill（这套系统同时也为DataFlow提供了执行引擎），这是一套基于MillWheel之上，博采众家之长的大数据处理系统，包括提供更好的调度和分发策略、更清晰的框架和业务代码解耦。
+
+MillWheel给我们带来最大的价值是之前列出的四个概念（数据精确一次性处理，持久化的状态存储，Watermark，持久定时器）为流式计算提供了工业级生产保障：即使在不可靠的商用硬件上，也可以对无序数据进行稳定的、低延迟的处理。
 
 # Kafka
 
@@ -224,6 +257,7 @@ Zeitgeist项目首先尝试通过在计算逻辑之前插入处理时间的延�
 
 ![10-23](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1023.png)
 
+图10-23 Kafka的时间轴
 
 如果你不熟悉它，我们可以简单描述为: Kafka本质上是一个持久的流式数据传输和存储工具，底层系统实现为一组带有分区结构的日志型存储。它最初是由Neha Narkhede和Jay Kreps等业界大牛在LinkedIn公司内部开发的，其卓越的特性有:
 
@@ -242,9 +276,13 @@ Kafka系统中第二个值得注意的重点是流和表理论的普及。我们
 
 ![10-24](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1024.png)
 
- 图10-24 I ❤ Logs
+ 图10-24 《I ❤ Logs》
 
 Kafka为流处理领域做出了巨大贡献，可以说比其他任何单一系统都要多。特别是，对输入和输出流的持久性和可重放的设计，帮助将流计算从近似工具的小众领域发展到在大数据领域妇孺皆知的程度起了很大作用。此外，Kafka社区推广的流和表理论对于数据处理引发了我们深入思考。
+
+![10-25](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1025.png)
+
+Figure 10-25. Martin的帖子(左边) 以及 Jay的帖子(右边)
 
 
 # DataFlow
@@ -252,6 +290,7 @@ Cloud Dataflow（图10-26）是Google完全托管的、基于云架构的数据�
 
 ![10-26](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1026.png)
 
+图10-26 Google DataFlow的时间轴
 
 虽然Google的Dataflow的Serverless特点可能是从系统角度来看最具技术挑战性以及有别于其他云厂商产品的重要因素，但我想在此讨论主要是其批流统一的编程模型。编程模型包括我们在本书的大部分内容中所讨论的转换，窗口，水印，触发器和聚合计算。当然，所有这些讨论都包含了思考问题的what、where、when、how。
 
@@ -273,9 +312,9 @@ DataFlow模型首先诞生于Flume，因为我们希望将MillWheel中强大的�
 
 ![10-27](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1027.png)
 
+图10-27 DataFlow的论文
 
 DataFlow还有不少可以大书特书的功能特点，但在这章内容构成来看，我认为DataFlow最重要的是构建了一套批流统一的大数据处理模型。DataFlow为我们提供了一套全面的处理无界且无序数据集的能力，同时这套系统很好的平衡了正确性、延迟、成本之间的相互关系。
-
 
 
 # Flink
@@ -284,6 +323,7 @@ Flink（图10-28）在2015年突然出现在大数据舞台，然后似乎在一
 
 ![10-28](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1028.png)
 
+图10-28. Flink的时间轴
 
 在我看来，Flink崛起有两个主要原因：
 
@@ -302,9 +342,9 @@ Flink既能够支持精确一次的语义处理保证，同时又能够提供支
 
 1. 构建一个用于测试的Flink数据管道，其拥有比Twitter Storm更高的准确性（归功于Flink的强一次性语义），但成本却降到了1％。
 
-  ![10-30](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1030.png)
+   ![10-30](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1030.png)
 
-  图10-30。 Extending the Yahoo! Streaming Benchmark
+   图10-30。 《Extending the Yahoo! Streaming Benchmark》
 
 2. Flink在精确一次的处理语义参数设定下，仍然达到Storm的7.5倍吞吐量（而且，Storm还不具备精确一次的处理语义）。此外，由于网络被打满导致Flink的性能受到限制; 进一步消除网络瓶颈后Flink的吞吐量几乎达到Storm的40倍。
 
@@ -312,7 +352,7 @@ Flink既能够支持精确一次的语义处理保证，同时又能够提供支
 
 ![10-31](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1031.png)
 
-图10-31。 “Savepoints: Turning Back Time”
+图10-31。 《Savepoints: Turning Back Time》
 
 通过快照机制，Flink获得了端到端数据一致性。Flink更进了一步，利用其快照的全局特性，提供了从过去的任何一点重启整个管道的能力，这一功能称为SavePoint（在Fabian Hueske和Michael Winters的帖子
 [《Savepoints: Turning Back Time》(https://data-artisans.com/blog/turning-back-time-savepoints)]中有所描述，[图10-31]）。Savepoints功能参考了Kafka应用于流式传输层的持久化和可重放特性，并将其扩展应用到整个底层Pipeline。流式处理仍然遗留大量开放性问题有待优化和提升，但Flink的Savepoints功能是朝着正确方向迈出的第一步，也是整个行业非常有特点的一步。
@@ -320,6 +360,7 @@ Flink既能够支持精确一次的语义处理保证，同时又能够提供支
 
 ![10-32](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1032.png)
 
+图10-32 《State Management in Apache Flink》
 
 除了保存点之外，Flink社区还在不断创新，包括将第一个实用流式SQL API推向大规模分布式流处理引擎的领域，正如我们在第8章中所讨论的那样。
 总之，Flink的迅速崛起成为流计算领军人物主要归功于三个特点：
@@ -336,6 +377,7 @@ Flink既能够支持精确一次的语义处理保证，同时又能够提供支
 
 ![10-33](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1033.png)
 
+图10-33 Apache Beam的时间轴
 
 具体而言，Beam由许多组件组成：
 * 一个统一的批量加流式编程模型，继承自Google DataFlow产品设计，以及我们在本书的大部分内容中讨论的细节。该模型独立于任何语言实现或runtime系统。您可以将此视为Beam等同于描述关系代数模型的SQL。
@@ -352,6 +394,8 @@ Beam的核心愿景是实现一套可移植接口层，最引人注目的功能�
   Beam将会提出一些API，这些API需要底层runtime改造支持，并非所有底层引擎最初都支持这些功能。这没关系，随着时间的推移，我们希望许多底层引擎将这些功能融入未来版本中; 对于那些需要这些功能的业务案例来说，具备这些功能的引擎通常会被业务方选择。
 
 ![10-34](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1034.png)
+
+图10-34 《Powerful and modular I/O connec‐ tors with Splittable DoFn in Apache Beam》
 
 这里举一个Beam里面关于SplittableDoFn的API例子，这个API可以用来实现一个可组合的，可扩展的数据源。（具体参看Eugene Kirpichov在他的文章[《 “Powerful and modular I/O connectors with Splittable DoFn in Apache Beam》](https://beam.apache.org/blog/2017/08/16/splittable-do-fn.html)中描述[图10-34]）。它设计确实很有特点且功能强大，目前我们还没有看到所有底层引擎对动态负载均衡等一些更具创新性功能进行广泛支持。然而，我们预计这些功能将随着时间的推移而持续加入底层引擎支持的范围。
 
