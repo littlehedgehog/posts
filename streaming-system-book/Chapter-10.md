@@ -290,7 +290,7 @@ Figure 10-25. Martin的帖子(左边) 以及 Jay的帖子(右边)
 # DataFlow
 Cloud Dataflow（图10-26）是Google完全托管的、基于云架构的数据处理服务。 Dataflow于2015年8月推向全球。DataFlow将MapReduce，Flume和MillWheel的十多年经验融入其中，并将其打包成Serverless的云体验。
 
-![10-26](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1026.png)
+![10-26](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1027.png)
 
 图10-26 Google DataFlow的时间轴
 
@@ -312,7 +312,7 @@ DataFlow模型首先诞生于Flume，因为我们希望将MillWheel中强大的�
 
 考虑到我们之前整本书都在讨论DataFlow和Beam模型的各类问题，我在此处重新给大家讲述这些概念纯属多此一举。但是，如果你正在寻找稍微更具学术性的内容以及一些应用案例，我推荐你看下2015年发表的[《DataFlow论文..》](http://www.vldb.org/pvldb/vol8/p1792-Akidau.pdf)（图10-27）。
 
-![10-27](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1027.png)
+![10-28](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1028.png)
 
 图10-27 DataFlow的论文
 
@@ -323,7 +323,7 @@ DataFlow还有不少可以大书特书的功能特点，但在这章内容构成
 
 Flink（图10-28）在2015年突然出现在大数据舞台，然后似乎在一夜之间从一个无人所知的系统迅速转变为人人皆知的流式处理引擎。
 
-![10-28](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1028.png)
+![10-29](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1029.png)
 
 图10-28. Flink的时间轴
 
@@ -334,7 +334,7 @@ Flink（图10-28）在2015年突然出现在大数据舞台，然后似乎在一
 
 Reuven在第5章中简要介绍了Flink的一致性机制，这里在重申一下，其基本思想是在系统中的Worker之间沿着数据传播路径上产生周期性Barrier。这些Barrier充当了在不同Worker之间传输数据时的对齐机制。当一个Worker在其所有上游算子输入来源（即来自其所有上游一层的Worker）上接收到全部Barrier时，Worker会将当前所有key对应的状态写入一个持久化存储。这个过程意味着将这个Barrier之前的所有数据都做了持久化。
 
-![10-29](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1029.png)
+![10-30](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1030.png)
 
 图10-29 Chandy-Lamport快照
  
@@ -344,7 +344,7 @@ Flink既能够支持精确一次的语义处理保证，同时又能够提供支
 
 1. 构建一个用于测试的Flink数据管道，其拥有比Twitter Storm更高的准确性（归功于Flink的强一次性语义），但成本却降到了1％。
 
-   ![10-30](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1030.png)
+   ![10-31](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1031.png)
 
    图10-30。 《Extending the Yahoo! Streaming Benchmark》
 
@@ -352,7 +352,7 @@ Flink既能够支持精确一次的语义处理保证，同时又能够提供支
 
 从那时起，许多其他流式处理项目（特别是Storm和Apex）都采用了类似算法的数据处理一致性机制。
 
-![10-31](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1031.png)
+![10-32](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1032.png)
 
 图10-31。 《Savepoints: Turning Back Time》
 
@@ -360,7 +360,7 @@ Flink既能够支持精确一次的语义处理保证，同时又能够提供支
 [《Savepoints: Turning Back Time》(https://data-artisans.com/blog/turning-back-time-savepoints)]中有所描述，[图10-31]）。Savepoints功能参考了Kafka应用于流式传输层的持久化和可重放特性，并将其扩展应用到整个底层Pipeline。流式处理仍然遗留大量开放性问题有待优化和提升，但Flink的Savepoints功能是朝着正确方向迈出的第一步，也是整个行业非常有特点的一步。
 如果您有兴趣了解有关Flink快照和保存点的系统构造的更多信息，请参阅[《State Management in Apache Flink》](http://www.vldb.org/pvldb/vol10/p1718-carbone.pdf)（图10-32），论文详细讨论了相关的实现。
 
-![10-32](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1032.png)
+![10-33](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1033.png)
 
 图10-32 《State Management in Apache Flink》
 
@@ -377,7 +377,7 @@ Flink既能够支持精确一次的语义处理保证，同时又能够提供支
 
 我们今天谈到的最后一个系统是Apache Beam（图10-33）。 Beam与本章中的大多数其他系统的不同之处在于，它主要是编程模型，API设计和可移植层，而不是带有执行引擎的完整系统栈。但这正是我想强调的重点：正如SQL作为声明性数据处理的通用语言一样，Beam的目标是成为程序化数据处理的通用语言。
 
-![10-33](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1033.png)
+![10-34](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1034.png)
 
 图10-33 Apache Beam的时间轴
 
@@ -395,7 +395,7 @@ Beam的核心愿景是实现一套可移植接口层，最引人注目的功能�
 
   Beam将会提出一些API，这些API需要底层runtime改造支持，并非所有底层引擎最初都支持这些功能。这没关系，随着时间的推移，我们希望许多底层引擎将这些功能融入未来版本中; 对于那些需要这些功能的业务案例来说，具备这些功能的引擎通常会被业务方选择。
 
-![10-34](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1034.png)
+![10-35](https://github.com/littlehedgehog/posts/blob/master/streaming-system-book/images/stsy_1035.png)
 
 图10-34 《Powerful and modular I/O connec‐ tors with Splittable DoFn in Apache Beam》
 
