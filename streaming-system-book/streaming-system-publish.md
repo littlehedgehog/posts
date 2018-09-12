@@ -328,7 +328,7 @@ Flink（图10-28）在2015年突然出现在大数据舞台，然后似乎在一
 在我看来，Flink崛起有两个主要原因：
 
 * 采用Dataflow/Beam编程模型，使其成为完备语义功能的开源流式处理系统。
-* 其高效的快照实现方式（源自Chandy和Lamport的原始论文[《“Distributed Snapshots: Determining Global States of Distributed Systems”》](http://lamport.azurewebsites.net/pubs/chandy.pdf)）的研究，这为其提供了正确性所需的强一致性保证。
+* 其高效的快照实现方式，源自Chandy和Lamport的原始论文[《“Distributed Snapshots: Determining Global States of Distributed Systems”》](http://lamport.azurewebsites.net/pubs/chandy.pdf)的研究，这为其提供了正确性所需的强一致性保证。
 
 Reuven在第5章中简要介绍了Flink的一致性机制，这里在重申一下，其基本思想是在系统中的Worker之间沿着数据传播路径上产生周期性Barrier。这些Barrier充当了在不同Worker之间传输数据时的对齐机制。当一个Worker在其所有上游算子输入来源（即来自其所有上游一层的Worker）上接收到全部Barrier时，Worker会将当前所有key对应的状态写入一个持久化存储。这个过程意味着将这个Barrier之前的所有数据都做了持久化。
 
